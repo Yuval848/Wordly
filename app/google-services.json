@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "358125444430",
+    "project_id": "wordly-by-yuvalmiz",
+    "storage_bucket": "wordly-by-yuvalmiz.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:358125444430:android:6abc536600d4d75b29d21f",
+        "android_client_info": {
+          "package_name": "com.example.wordly_by_yuvalmiz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6KsIo_OVXJ5WVX5r7l8uuytdpHY9Rrfs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

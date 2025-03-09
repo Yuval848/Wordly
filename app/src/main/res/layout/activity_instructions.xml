@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InstructionsActivity"
+    android:orientation="vertical"
+    android:id="@+id/activityInstruction">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="הוראות המשחק:"
+        android:textSize="50dp"
+        tools:ignore="MissingConstraints"></TextView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:text="כדי לשחק יש להזין מילה בעלת חמש אותיות באנגלית. המשחק ינתח את המילה לפי כל אות ואם האות נמצאת במילה ובמיקום הנכון של המילה שאותה המשחק בוחר באקראיות התא של האות יצבע בצבע ירוק,אחרת אם האות נמצאת במילה אך לא במיקום נכון אז התא יצבע בצהוב, אם האות לא נמצאת במילה התא יצבע באדום."
+        android:textSize="30dp"
+        ></TextView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ok"
+        android:textSize="40dp"
+        android:id="@+id/okbtn"></Button>
+</LinearLayout>
