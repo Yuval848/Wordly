@@ -16,6 +16,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class GameActivity extends AppCompatActivity {
     private BoardGame boardGame;
@@ -197,10 +200,33 @@ public class GameActivity extends AppCompatActivity {
 
 
     private boolean isWordValid(String word) {
-        /// TODO: 13/01/2025 להפוך את הקו השחור שירשום במקום בקו על הרשת
-        /// TODO: 13/01/2025 https://api.datamuse.com/words?sp=YOUR_WORD_HERE, הרעיון הוא שתיקח את הלינק הזה שבו אתה מקבל responses ואיתם אתה עובר על המילים שקיבלת ובודק אם היא שם.
 
-        return(true);
+
+
+            String API_KEY = "YOUR_API_KEY";  // Replace with your Wordnik API key
+            String url = "https://api.wordnik.com/v4/word.json/" + word + "/definitions?api_key=" + API_KEY;
+
+            DownloadJson downloadJson = new DownloadJson();
+
+            try {
+                String result = downloadJson.execute(url).get();
+
+                // Check if the result is empty or null
+                if (result == null || result.isEmpty()) {
+                    return false;
+                }
+
+                // Parse JSON response
+                JSONArray jsonArray = new JSONArray(result);
+
+                // If Wordnik returns at least one definition, the word is valid
+                return jsonArray.length() > 0;
+
+            } catch (ExecutionException | InterruptedException | JSONException e) {
+                e.printStackTrace();
+            }
+            return false;  // Word not found
+
     }
 
 
