@@ -3,8 +3,11 @@ package com.example.wordly_by_yuvalmiz;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -15,6 +18,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +26,9 @@ import org.json.JSONObject;
 
 public class GameActivity extends AppCompatActivity {
     private BoardGame boardGame;
+    TextToSpeech textToSpeech;
+    SoundPool soundPool;
+    int sound1,sound2;
 
     LinearLayout linearLayout,
             linearLayout1,
@@ -82,7 +89,19 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status == TextToSpeech.SUCCESS)
+                {
+                    int lang = textToSpeech.setLanguage(Locale.ENGLISH);
+                }
+            }
+        });
+        soundPool = new SoundPool(3, AudioManager.STREAM_MUSIC,0);
 
+        sound1 = soundPool.load(this,R.raw.wrongsound,1);
+        sound2 = soundPool.load(this,R.raw.correctsound,1);
 
 
         linearLayout = findViewById(R.id.activitygame);
@@ -175,12 +194,16 @@ public class GameActivity extends AppCompatActivity {
 
             if(Greenflag == 5)
             {
-                Toast.makeText(this, "congratulations you have won", Toast.LENGTH_SHORT).show();
+                soundPool.play(sound2,1,1,0,3,1);
+                textToSpeech.speak("Congratulation you have won", TextToSpeech.QUEUE_FLUSH, null);
+
+
                 createDialog();
             }
             Greenflag =0;
         }
         if(attempts == 6)
+            soundPool.play(sound1,1,1,0,0,1);
             createDialog();
     }
 
@@ -188,7 +211,10 @@ public class GameActivity extends AppCompatActivity {
 
     private void createDialog() {
         CustomDialog customDialog = new CustomDialog(this);
+        textToSpeech.speak("Would you like to play again?", TextToSpeech.QUEUE_FLUSH, null);
         customDialog.show();
+
+
     }
     private boolean YellowSquare(char a) {
         for (int j = 0; j <5; j++) {
