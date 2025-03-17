@@ -203,10 +203,56 @@ public class GameActivity extends AppCompatActivity {
             Greenflag =0;
         }
         if(attempts == 6)
+        {
             soundPool.play(sound1,1,1,0,0,1);
             createDialog();
+        }
+
     }
 
+    private boolean isWordValid(String word) {
+        String API_KEY = "8e8sodqspul7qzwvfocimwsu3g9tua7qg6ktlgx13zptyo57h";  // Replace with your Wordnik API key
+        String url = "https://api.wordnik.com/v4/word.json/" + word + "/definitions?api_key=" + API_KEY;
+
+        DownloadJson downloadJson = new DownloadJson();
+
+        try {
+            // Perform the network operation to get the JSON response
+            String result = downloadJson.execute(url).get();
+
+            // Check if the result is empty or null
+            if (result == null || result.isEmpty()) {
+                return false; // If the response is empty, the word is not valid
+            }
+
+            // Parse the JSON response
+            JSONArray jsonArray = new JSONArray(result);
+
+            // If there are any definitions (jsonArray length > 0), proceed to check further
+            if (jsonArray.length() > 0) {
+                // Loop through all the definitions in the JSON response
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject definition = jsonArray.getJSONObject(i);
+
+                    // Check if the definition has a valid "text" field with a non-empty value
+                    if (definition.has("text") && !definition.getString("text").isEmpty()) {
+                        String definitionText = definition.getString("text").trim();
+
+                        // Check if the definition text is not just empty or whitespace
+                        if (!definitionText.isEmpty() && !definitionText.equalsIgnoreCase("no definition found")) {
+                            return true; // The word has at least one valid definition with content
+                        }
+                    }
+                }
+            }
+
+        } catch (ExecutionException | InterruptedException | JSONException e) {
+            e.printStackTrace(); // Handle exceptions (network issues, JSON parsing issues)
+        }
+
+        // If no valid definition was found, return false
+        return false;
+    }
 
 
     private void createDialog() {
@@ -223,40 +269,6 @@ public class GameActivity extends AppCompatActivity {
         }
         return false;
     }
-
-
-    private boolean isWordValid(String word) {
-
-
-
-            String API_KEY = "YOUR_API_KEY";  // Replace with your Wordnik API key
-            String url = "https://api.wordnik.com/v4/word.json/" + word + "/definitions?api_key=" + API_KEY;
-
-            DownloadJson downloadJson = new DownloadJson();
-
-            try {
-                String result = downloadJson.execute(url).get();
-
-                // Check if the result is empty or null
-                if (result == null || result.isEmpty()) {
-                    return false;
-                }
-
-                // Parse JSON response
-                JSONArray jsonArray = new JSONArray(result);
-
-                // If Wordnik returns at least one definition, the word is valid
-                return jsonArray.length() > 0;
-
-            } catch (ExecutionException | InterruptedException | JSONException e) {
-                e.printStackTrace();
-            }
-            return false;  // Word not found
-
-    }
-
-
-
 
     private void setBackgroundColor(String backgroundColor) {
         switch (backgroundColor)
